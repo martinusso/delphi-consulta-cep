@@ -34,10 +34,10 @@ end;
 `> consultaCEP('90035170');`
 
 ```Delphi
-Endereco.bairro      > Floresta
-Endereco.cep         > 90.035-170
-Endereco.cidade      > Porto Alegre
-Endereco.complemento >
-Endereco.uf          > RS
-Endereco.logradouro  > Rua Gonçalo de Carvalho
+Endereco.bairro      = Floresta
+Endereco.cep         = 90.035-170
+Endereco.cidade      = Porto Alegre
+Endereco.complemento =
+Endereco.uf          = RS
+Endereco.logradouro  = Rua Gonçalo de Carvalho
 ```
