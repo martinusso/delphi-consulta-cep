@@ -14,13 +14,13 @@ const
   IS_UNQL = $0008;
 
 type
-  TEnderecoERP = class;
+  TEndereco = class;
 
-  TUnidadePostagemERP = class(TRemotable)
+  TUnidadePostagem = class(TRemotable)
   private
     FdiretoriaRegional: string;
     FdiretoriaRegional_Specified: Boolean;
-    Fendereco: TEnderecoERP;
+    Fendereco: TEndereco;
     Fendereco_Specified: Boolean;
     Fid: string;
     Fid_Specified: Boolean;
@@ -32,7 +32,7 @@ type
     Ftipo_Specified: Boolean;
     procedure SetdiretoriaRegional(Index: Integer; const Astring: string);
     function  diretoriaRegional_Specified(Index: Integer): Boolean;
-    procedure Setendereco(Index: Integer; const AenderecoERP: TEnderecoERP);
+    procedure Setendereco(Index: Integer; const AenderecoERP: TEndereco);
     function  endereco_Specified(Index: Integer): Boolean;
     procedure Setid(Index: Integer; const Astring: string);
     function  id_Specified(Index: Integer): Boolean;
@@ -46,15 +46,15 @@ type
     destructor Destroy; override;
   published
     property diretoriaRegional: string       Index (IS_OPTN or IS_UNQL) read FdiretoriaRegional write SetdiretoriaRegional stored diretoriaRegional_Specified;
-    property endereco:          TEnderecoERP  Index (IS_OPTN or IS_UNQL) read Fendereco write Setendereco stored endereco_Specified;
+    property endereco:          TEndereco  Index (IS_OPTN or IS_UNQL) read Fendereco write Setendereco stored endereco_Specified;
     property id:                string       Index (IS_OPTN or IS_UNQL) read Fid write Setid stored id_Specified;
     property nome:              string       Index (IS_OPTN or IS_UNQL) read Fnome write Setnome stored nome_Specified;
     property status:            string       Index (IS_OPTN or IS_UNQL) read Fstatus write Setstatus stored status_Specified;
     property tipo:              string       Index (IS_OPTN or IS_UNQL) read Ftipo write Settipo stored tipo_Specified;
   end;
-  Array_Of_unidadePostagemERP = array of TUnidadePostagemERP;
+  Array_Of_unidadePostagem = array of TUnidadePostagem;
 
-  TEnderecoERP = class(TRemotable)
+  TEndereco = class(TRemotable)
   private
     Fbairro: string;
     Fbairro_Specified: Boolean;
@@ -71,7 +71,7 @@ type
     Fid: Int64;
     Fuf: string;
     Fuf_Specified: Boolean;
-    FunidadesPostagem: Array_Of_unidadePostagemERP;
+    FunidadesPostagem: Array_Of_unidadePostagem;
     FunidadesPostagem_Specified: Boolean;
     procedure Setbairro(Index: Integer; const Astring: string);
     function  bairro_Specified(Index: Integer): Boolean;
@@ -87,7 +87,7 @@ type
     function  end__Specified(Index: Integer): Boolean;
     procedure Setuf(Index: Integer; const Astring: string);
     function  uf_Specified(Index: Integer): Boolean;
-    procedure SetunidadesPostagem(Index: Integer; const AArray_Of_unidadePostagemERP: Array_Of_unidadePostagemERP);
+    procedure SetunidadesPostagem(Index: Integer; const AArray_Of_unidadePostagemERP: Array_Of_unidadePostagem);
     function  unidadesPostagem_Specified(Index: Integer): Boolean;
   public
     destructor Destroy; override;
@@ -100,7 +100,7 @@ type
     property end_:             string                       Index (IS_OPTN or IS_UNQL) read Fend_ write Setend_ stored end__Specified;
     property id:               Int64                        Index (IS_UNQL) read Fid write Fid;
     property uf:               string                       Index (IS_OPTN or IS_UNQL) read Fuf write Setuf stored uf_Specified;
-    property unidadesPostagem: Array_Of_unidadePostagemERP  Index (IS_OPTN or IS_UNBD or IS_NLBL or IS_UNQL) read FunidadesPostagem write SetunidadesPostagem stored unidadesPostagem_Specified;
+    property unidadesPostagem: Array_Of_unidadePostagem  Index (IS_OPTN or IS_UNBD or IS_NLBL or IS_UNQL) read FunidadesPostagem write SetunidadesPostagem stored unidadesPostagem_Specified;
   end;
 
   SigepClienteException = class(ERemotableException)
@@ -120,19 +120,19 @@ type
   // port      : AtendeClientePort
   // URL       : https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente
   // ************************************************************************ //
-  TAtendeCliente = interface(IInvokable)
+  AtendeCliente = interface(IInvokable)
   ['{06395354-FEDE-FDC9-368D-51C37A49D0E0}']
-    function consultaCEP(const cep: string): TEnderecoERP; stdcall;
+    function consultaCEP(const cep: string): TEndereco; stdcall;
   end;
 
-function GetWsConsultaCEP: TAtendeCliente;
+function GetAtendeCliente: AtendeCliente;
 
 implementation
 
 uses
   SysUtils;
 
-function GetWsConsultaCEP: TAtendeCliente;
+function GetAtendeCliente: AtendeCliente;
 const
   defWSDL = 'https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl';
   defSvc  = 'AtendeClienteService';
@@ -142,7 +142,7 @@ var
 begin
   RIO := THTTPRIO.Create(nil);
   try
-    Result := (RIO as TAtendeCliente);
+    Result := (RIO as AtendeCliente);
     RIO.WSDLLocation := defWSDL;
     RIO.Service := defSvc;
     RIO.Port := defPrt;
@@ -152,79 +152,79 @@ begin
   end;
 end;
 
-destructor TUnidadePostagemERP.Destroy;
+destructor TUnidadePostagem.Destroy;
 begin
   FreeAndNil(Fendereco);
   inherited Destroy;
 end;
 
-procedure TUnidadePostagemERP.SetdiretoriaRegional(Index: Integer; const Astring: string);
+procedure TUnidadePostagem.SetdiretoriaRegional(Index: Integer; const Astring: string);
 begin
   FdiretoriaRegional := Astring;
   FdiretoriaRegional_Specified := True;
 end;
 
-function TUnidadePostagemERP.diretoriaRegional_Specified(Index: Integer): Boolean;
+function TUnidadePostagem.diretoriaRegional_Specified(Index: Integer): Boolean;
 begin
   Result := FdiretoriaRegional_Specified;
 end;
 
-procedure TUnidadePostagemERP.Setendereco(Index: Integer; const AenderecoERP: TEnderecoERP);
+procedure TUnidadePostagem.Setendereco(Index: Integer; const AenderecoERP: TEndereco);
 begin
   Fendereco := AenderecoERP;
   Fendereco_Specified := True;
 end;
 
-function TUnidadePostagemERP.endereco_Specified(Index: Integer): Boolean;
+function TUnidadePostagem.endereco_Specified(Index: Integer): Boolean;
 begin
   Result := Fendereco_Specified;
 end;
 
-procedure TUnidadePostagemERP.Setid(Index: Integer; const Astring: string);
+procedure TUnidadePostagem.Setid(Index: Integer; const Astring: string);
 begin
   Fid := Astring;
   Fid_Specified := True;
 end;
 
-function TUnidadePostagemERP.id_Specified(Index: Integer): Boolean;
+function TUnidadePostagem.id_Specified(Index: Integer): Boolean;
 begin
   Result := Fid_Specified;
 end;
 
-procedure TUnidadePostagemERP.Setnome(Index: Integer; const Astring: string);
+procedure TUnidadePostagem.Setnome(Index: Integer; const Astring: string);
 begin
   Fnome := Astring;
   Fnome_Specified := True;
 end;
 
-function TUnidadePostagemERP.nome_Specified(Index: Integer): Boolean;
+function TUnidadePostagem.nome_Specified(Index: Integer): Boolean;
 begin
   Result := Fnome_Specified;
 end;
 
-procedure TUnidadePostagemERP.Setstatus(Index: Integer; const Astring: string);
+procedure TUnidadePostagem.Setstatus(Index: Integer; const Astring: string);
 begin
   Fstatus := Astring;
   Fstatus_Specified := True;
 end;
 
-function TUnidadePostagemERP.status_Specified(Index: Integer): Boolean;
+function TUnidadePostagem.status_Specified(Index: Integer): Boolean;
 begin
   Result := Fstatus_Specified;
 end;
 
-procedure TUnidadePostagemERP.Settipo(Index: Integer; const Astring: string);
+procedure TUnidadePostagem.Settipo(Index: Integer; const Astring: string);
 begin
   Ftipo := Astring;
   Ftipo_Specified := True;
 end;
 
-function TUnidadePostagemERP.tipo_Specified(Index: Integer): Boolean;
+function TUnidadePostagem.tipo_Specified(Index: Integer): Boolean;
 begin
   Result := Ftipo_Specified;
 end;
 
-destructor TEnderecoERP.Destroy;
+destructor TEndereco.Destroy;
 var
   I: Integer;
 begin
@@ -234,111 +234,111 @@ begin
   inherited Destroy;
 end;
 
-procedure TEnderecoERP.Setbairro(Index: Integer; const Astring: string);
+procedure TEndereco.Setbairro(Index: Integer; const Astring: string);
 begin
   Fbairro := Astring;
   Fbairro_Specified := True;
 end;
 
-function TEnderecoERP.bairro_Specified(Index: Integer): Boolean;
+function TEndereco.bairro_Specified(Index: Integer): Boolean;
 begin
   Result := Fbairro_Specified;
 end;
 
-procedure TEnderecoERP.Setcep(Index: Integer; const Astring: string);
+procedure TEndereco.Setcep(Index: Integer; const Astring: string);
 begin
   Fcep := Astring;
   Fcep_Specified := True;
 end;
 
-function TEnderecoERP.cep_Specified(Index: Integer): Boolean;
+function TEndereco.cep_Specified(Index: Integer): Boolean;
 begin
   Result := Fcep_Specified;
 end;
 
-procedure TEnderecoERP.Setcidade(Index: Integer; const Astring: string);
+procedure TEndereco.Setcidade(Index: Integer; const Astring: string);
 begin
   Fcidade := Astring;
   Fcidade_Specified := True;
 end;
 
-function TEnderecoERP.cidade_Specified(Index: Integer): Boolean;
+function TEndereco.cidade_Specified(Index: Integer): Boolean;
 begin
   Result := Fcidade_Specified;
 end;
 
-procedure TEnderecoERP.Setcomplemento(Index: Integer; const Astring: string);
+procedure TEndereco.Setcomplemento(Index: Integer; const Astring: string);
 begin
   Fcomplemento := Astring;
   Fcomplemento_Specified := True;
 end;
 
-function TEnderecoERP.complemento_Specified(Index: Integer): Boolean;
+function TEndereco.complemento_Specified(Index: Integer): Boolean;
 begin
   Result := Fcomplemento_Specified;
 end;
 
-procedure TEnderecoERP.Setcomplemento2(Index: Integer; const Astring: string);
+procedure TEndereco.Setcomplemento2(Index: Integer; const Astring: string);
 begin
   Fcomplemento2 := Astring;
   Fcomplemento2_Specified := True;
 end;
 
-function TEnderecoERP.complemento2_Specified(Index: Integer): Boolean;
+function TEndereco.complemento2_Specified(Index: Integer): Boolean;
 begin
   Result := Fcomplemento2_Specified;
 end;
 
-procedure TEnderecoERP.Setend_(Index: Integer; const Astring: string);
+procedure TEndereco.Setend_(Index: Integer; const Astring: string);
 begin
   Fend_ := Astring;
   Fend__Specified := True;
 end;
 
-function TEnderecoERP.end__Specified(Index: Integer): Boolean;
+function TEndereco.end__Specified(Index: Integer): Boolean;
 begin
   Result := Fend__Specified;
 end;
 
-procedure TEnderecoERP.Setuf(Index: Integer; const Astring: string);
+procedure TEndereco.Setuf(Index: Integer; const Astring: string);
 begin
   Fuf := Astring;
   Fuf_Specified := True;
 end;
 
-function TEnderecoERP.uf_Specified(Index: Integer): Boolean;
+function TEndereco.uf_Specified(Index: Integer): Boolean;
 begin
   Result := Fuf_Specified;
 end;
 
-procedure TEnderecoERP.SetunidadesPostagem(Index: Integer; const AArray_Of_unidadePostagemERP: Array_Of_unidadePostagemERP);
+procedure TEndereco.SetunidadesPostagem(Index: Integer; const AArray_Of_unidadePostagemERP: Array_Of_unidadePostagem);
 begin
   FunidadesPostagem := AArray_Of_unidadePostagemERP;
   FunidadesPostagem_Specified := True;
 end;
 
-function TEnderecoERP.unidadesPostagem_Specified(Index: Integer): Boolean;
+function TEndereco.unidadesPostagem_Specified(Index: Integer): Boolean;
 begin
   Result := FunidadesPostagem_Specified;
 end;
 
 initialization
   { AtendeCliente }
-  InvRegistry.RegisterInterface(TypeInfo(TAtendeCliente), 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'UTF-8');
-  InvRegistry.RegisterDefaultSOAPAction(TypeInfo(TAtendeCliente), '');
-  InvRegistry.RegisterInvokeOptions(TypeInfo(TAtendeCliente), ioDocument);
+  InvRegistry.RegisterInterface(TypeInfo(AtendeCliente), 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'UTF-8');
+  InvRegistry.RegisterDefaultSOAPAction(TypeInfo(AtendeCliente), '');
+  InvRegistry.RegisterInvokeOptions(TypeInfo(AtendeCliente), ioDocument);
   { AtendeCliente.consultaCEP }
-  InvRegistry.RegisterMethodInfo(TypeInfo(TAtendeCliente), 'consultaCEP', '',
+  InvRegistry.RegisterMethodInfo(TypeInfo(AtendeCliente), 'consultaCEP', '',
                                  '[ReturnName="return"]', IS_OPTN or IS_UNQL);
-  InvRegistry.RegisterParamInfo(TypeInfo(TAtendeCliente), 'consultaCEP', 'cep', '',
+  InvRegistry.RegisterParamInfo(TypeInfo(AtendeCliente), 'consultaCEP', 'cep', '',
                                 '', IS_UNQL);
-  InvRegistry.RegisterParamInfo(TypeInfo(TAtendeCliente), 'consultaCEP', 'return', '',
+  InvRegistry.RegisterParamInfo(TypeInfo(AtendeCliente), 'consultaCEP', 'return', '',
                                 '', IS_UNQL);
 
-  RemClassRegistry.RegisterXSInfo(TypeInfo(Array_Of_unidadePostagemERP), 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'Array_Of_unidadePostagemERP');
-  RemClassRegistry.RegisterXSClass(TUnidadePostagemERP, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'unidadePostagemERP');
-  RemClassRegistry.RegisterXSClass(TEnderecoERP, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'enderecoERP');
-  RemClassRegistry.RegisterExternalPropName(TypeInfo(TEnderecoERP), 'end_', '[ExtName="end"]');
+  RemClassRegistry.RegisterXSInfo(TypeInfo(Array_Of_unidadePostagem), 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'Array_Of_unidadePostagemERP');
+  RemClassRegistry.RegisterXSClass(TUnidadePostagem, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'unidadePostagemERP');
+  RemClassRegistry.RegisterXSClass(TEndereco, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'enderecoERP');
+  RemClassRegistry.RegisterExternalPropName(TypeInfo(TEndereco), 'end_', '[ExtName="end"]');
 
   { Exceptions }
   RemClassRegistry.RegisterXSClass(SigepClienteException, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'SigepClienteException');
