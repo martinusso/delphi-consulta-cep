@@ -66,8 +66,8 @@ type
     Fcomplemento_Specified: Boolean;
     Fcomplemento2: string;
     Fcomplemento2_Specified: Boolean;
-    Fend_: string;
-    Fend__Specified: Boolean;
+    Flogradouro: string;
+    Flogradouro_Specified: Boolean;
     Fid: Int64;
     Fuf: string;
     Fuf_Specified: Boolean;
@@ -84,7 +84,7 @@ type
     procedure Setcomplemento2(Index: Integer; const Astring: string);
     function  complemento2_Specified(Index: Integer): Boolean;
     procedure Setend_(Index: Integer; const Astring: string);
-    function  end__Specified(Index: Integer): Boolean;
+    function  logradouro_Specified(Index: Integer): Boolean;
     procedure Setuf(Index: Integer; const Astring: string);
     function  uf_Specified(Index: Integer): Boolean;
     procedure SetunidadesPostagem(Index: Integer; const AArray_Of_unidadePostagemERP: Array_Of_unidadePostagem);
@@ -97,7 +97,7 @@ type
     property cidade:           string                       Index (IS_OPTN or IS_UNQL) read Fcidade write Setcidade stored cidade_Specified;
     property complemento:      string                       Index (IS_OPTN or IS_UNQL) read Fcomplemento write Setcomplemento stored complemento_Specified;
     property complemento2:     string                       Index (IS_OPTN or IS_UNQL) read Fcomplemento2 write Setcomplemento2 stored complemento2_Specified;
-    property end_:             string                       Index (IS_OPTN or IS_UNQL) read Fend_ write Setend_ stored end__Specified;
+    property logradouro:       string                       Index (IS_OPTN or IS_UNQL) read Flogradouro write Setend_ stored logradouro_Specified;
     property id:               Int64                        Index (IS_UNQL) read Fid write Fid;
     property uf:               string                       Index (IS_OPTN or IS_UNQL) read Fuf write Setuf stored uf_Specified;
     property unidadesPostagem: Array_Of_unidadePostagem  Index (IS_OPTN or IS_UNBD or IS_NLBL or IS_UNQL) read FunidadesPostagem write SetunidadesPostagem stored unidadesPostagem_Specified;
@@ -291,13 +291,13 @@ end;
 
 procedure TEndereco.Setend_(Index: Integer; const Astring: string);
 begin
-  Fend_ := Astring;
-  Fend__Specified := True;
+  Flogradouro := Astring;
+  Flogradouro_Specified := True;
 end;
 
-function TEndereco.end__Specified(Index: Integer): Boolean;
+function TEndereco.logradouro_Specified(Index: Integer): Boolean;
 begin
-  Result := Fend__Specified;
+  Result := Flogradouro_Specified;
 end;
 
 procedure TEndereco.Setuf(Index: Integer; const Astring: string);
@@ -338,7 +338,7 @@ initialization
   RemClassRegistry.RegisterXSInfo(TypeInfo(Array_Of_unidadePostagem), 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'Array_Of_unidadePostagemERP');
   RemClassRegistry.RegisterXSClass(TUnidadePostagem, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'unidadePostagemERP');
   RemClassRegistry.RegisterXSClass(TEndereco, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'enderecoERP');
-  RemClassRegistry.RegisterExternalPropName(TypeInfo(TEndereco), 'end_', '[ExtName="end"]');
+  RemClassRegistry.RegisterExternalPropName(TypeInfo(TEndereco), 'logradouro', '[ExtName="end"]');
 
   { Exceptions }
   RemClassRegistry.RegisterXSClass(SigepClienteException, 'http://cliente.bean.master.sigep.bsb.correios.com.br/', 'SigepClienteException');
