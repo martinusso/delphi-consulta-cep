@@ -83,7 +83,7 @@ type
     function  complemento_Specified(Index: Integer): Boolean;
     procedure Setcomplemento2(Index: Integer; const Astring: string);
     function  complemento2_Specified(Index: Integer): Boolean;
-    procedure Setend_(Index: Integer; const Astring: string);
+    procedure Setlogradouro(Index: Integer; const Astring: string);
     function  logradouro_Specified(Index: Integer): Boolean;
     procedure Setuf(Index: Integer; const Astring: string);
     function  uf_Specified(Index: Integer): Boolean;
@@ -97,7 +97,7 @@ type
     property cidade:           string                       Index (IS_OPTN or IS_UNQL) read Fcidade write Setcidade stored cidade_Specified;
     property complemento:      string                       Index (IS_OPTN or IS_UNQL) read Fcomplemento write Setcomplemento stored complemento_Specified;
     property complemento2:     string                       Index (IS_OPTN or IS_UNQL) read Fcomplemento2 write Setcomplemento2 stored complemento2_Specified;
-    property logradouro:       string                       Index (IS_OPTN or IS_UNQL) read Flogradouro write Setend_ stored logradouro_Specified;
+    property logradouro:       string                       Index (IS_OPTN or IS_UNQL) read Flogradouro write Setlogradouro stored logradouro_Specified;
     property id:               Int64                        Index (IS_UNQL) read Fid write Fid;
     property uf:               string                       Index (IS_OPTN or IS_UNQL) read Fuf write Setuf stored uf_Specified;
     property unidadesPostagem: Array_Of_unidadePostagem  Index (IS_OPTN or IS_UNBD or IS_NLBL or IS_UNQL) read FunidadesPostagem write SetunidadesPostagem stored unidadesPostagem_Specified;
@@ -289,7 +289,7 @@ begin
   Result := Fcomplemento2_Specified;
 end;
 
-procedure TEndereco.Setend_(Index: Integer; const Astring: string);
+procedure TEndereco.Setlogradouro(Index: Integer; const Astring: string);
 begin
   Flogradouro := Astring;
   Flogradouro_Specified := True;
