@@ -30,12 +30,12 @@ uses
 
 procedure TForm1.ButtonConsultarCEPClick(Sender: TObject);
 var
-  ws: TAtendeCliente;
-  Endereco: TEnderecoERP;
+  ws: AtendeCliente;
+  Endereco: TEndereco;
 begin
   Memo1.Clear;
 
-  ws := GetWsConsultaCEP();
+  ws := GetAtendeCliente();
   try
     Endereco := ws.consultaCEP(CEP.Text);
 
