@@ -1,7 +1,7 @@
 # delphi-consulta-cep
 Consulta de CEP usando webservice dos Correios com Delphi
 
-# Using
+## Using
 
 ```Delphi
 uses ConsultaCEP;
@@ -29,7 +29,7 @@ begin
 end;
 ```
 
-## Out
+### Out
 
 `> consultaCEP('90035170');`
 
